@@ -2,6 +2,7 @@ class Api::V1::DecksController < ApplicationController
   before_action :find_deck, only: [:show, :draw]
 
   def create
+    puts params
     @deck = Deck.create(deck_params)
     render json: @deck, status: 200
   end
@@ -25,7 +26,7 @@ class Api::V1::DecksController < ApplicationController
     end
 
     def deck_params
-      params.permit(:cards_attributes)
+      params.require(:deck).permit(cards_attributes: [:value, :suit, :code])
     end
 
 end
