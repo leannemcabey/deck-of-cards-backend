@@ -13,8 +13,14 @@ class Api::V1::DecksController < ApplicationController
 
   def draw
     @cards_drawn = []
-    5.times do
-      @cards_drawn << @deck.cards[rand(@deck.cards.length)]
+    if @deck.cards.length >=5
+      while @cards_drawn.length < 5 do
+        @card = @deck.cards[rand(@deck.cards.length)]
+        if !@cards_drawn.include?(@card)
+          @cards_drawn << @card
+          @card.destroy
+        end
+      end
     end
     render json: @cards_drawn, status: 200
   end
